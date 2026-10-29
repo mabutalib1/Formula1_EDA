@@ -3,6 +3,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 import joblib
+from pathlib import Path
+HERE = Path(__file__).parent
 
 st.set_page_config(page_title="Formula 1, 1950–2024", page_icon="🏁", layout="wide")
 
@@ -27,14 +29,14 @@ h2, h3 { font-weight: 600; }
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("clean_data.csv", parse_dates=["date"])
+    df = pd.read_csv(HERE / "clean_data.csv", parse_dates=["date"])
     return df
 
 
 @st.cache_resource
 def load_model():
     try:
-        return joblib.load("model.joblib")
+        return joblib.load(HERE / "model.joblib")
     except Exception:
         return None
 
@@ -56,7 +58,7 @@ def note(text):
 df = load_data()
 model = load_model()
 
-st.logo("logo.svg", size="large")
+st.logo(str(HERE / "logo.svg"), size="large")
 
 # ---------------- Sidebar ----------------
 with st.sidebar:
